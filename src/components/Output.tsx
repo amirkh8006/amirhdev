@@ -12,6 +12,7 @@ import Hobbies from "./commands/Hobbies";
 import Neofetch from "./commands/Neofetch";
 import Open from "./commands/Open";
 import Projects from "./commands/Projects";
+import Publications from "./commands/Publications";
 import Resume from "./commands/Resume";
 import Skills from "./commands/Skills";
 import Socials from "./commands/Socials";
@@ -49,6 +50,7 @@ const Output: React.FC<Props> = ({ index, cmd }) => {
           neofetch: <Neofetch />,
           open: <Open />,
           projects: <Projects />,
+          publications: <Publications />,
           resume: <Resume />,
           help: <Help />,
           history: <History />,

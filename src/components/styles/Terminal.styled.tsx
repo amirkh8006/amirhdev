@@ -8,7 +8,8 @@ export const Wrapper = styled.div`
   flex-direction: column-reverse;
   max-height: calc(100vh - 2rem);
   overflow-y: auto;
-  
+  overflow-anchor: none;
+
   /* Allow text selection */
   user-select: text;
   -webkit-user-select: text;

@@ -2,6 +2,7 @@ import React, {
   createContext,
   useCallback,
   useEffect,
+  useLayoutEffect,
   useRef,
   useState,
 } from "react";
@@ -31,6 +32,7 @@ export const commands: Command = [
   { cmd: "experience", desc: "my work experience", tab: 3 },
   { cmd: "education", desc: "my education background", tab: 4 },
   { cmd: "skills", desc: "view my technical skills", tab: 7 },
+  { cmd: "publications", desc: "view my published writing", tab: 1 },
   { cmd: "projects", desc: "view some of my personal projects", tab: 5 },
   { cmd: "clear", desc: "clear the terminal", tab: 8 },
   { cmd: "echo", desc: "print out anything", tab: 9 },
@@ -64,7 +66,8 @@ export const termContext = createContext<Term>({
 });
 
 const Terminal = () => {
-  const containerRef = useRef(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const latestCommandRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [inputVal, setInputVal] = useState("");
@@ -95,37 +98,41 @@ const Terminal = () => {
     setHints([]);
   };
 
+  useLayoutEffect(() => {
+    latestCommandRef.current?.scrollIntoView({ block: "start" });
+  }, [cmdHistory]);
+
   // focus on input when terminal is clicked (but allow text selection)
   const handleDivClick = useCallback((e: MouseEvent) => {
     // Use setTimeout to let selection complete before checking
     setTimeout(() => {
       const selection = window.getSelection();
       const target = e.target as HTMLElement;
-      
+
       // Don't focus if text is selected or if clicked on input
       if (selection && selection.toString().length > 0) {
         return;
       }
-      
-      if (target.tagName === 'INPUT' || target.closest('input')) {
+
+      if (target.closest("input, a, button")) {
         return;
       }
-      
-      inputRef.current && inputRef.current.focus();
+
+      inputRef.current && inputRef.current.focus({ preventScroll: true });
     }, 0);
   }, []);
-  
+
   // Global keyboard handler for terminal shortcuts
   const handleGlobalKeyDown = useCallback((e: KeyboardEvent) => {
     const ctrlShiftC = e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "c";
-    
+
     // Handle Ctrl+Shift+C globally (for copying selected text)
     if (ctrlShiftC) {
       e.preventDefault();
       const selection = window.getSelection();
       if (selection && selection.toString()) {
-        navigator.clipboard.writeText(selection.toString()).catch(err => {
-          console.error('Failed to copy text: ', err);
+        navigator.clipboard.writeText(selection.toString()).catch((err) => {
+          console.error("Failed to copy text: ", err);
         });
       }
     }
@@ -153,8 +160,8 @@ const Terminal = () => {
       e.preventDefault();
       const selection = window.getSelection();
       if (selection && selection.toString()) {
-        navigator.clipboard.writeText(selection.toString()).catch(err => {
-          console.error('Failed to copy text: ', err);
+        navigator.clipboard.writeText(selection.toString()).catch((err) => {
+          console.error("Failed to copy text: ", err);
         });
       }
       return;
@@ -216,7 +223,7 @@ const Terminal = () => {
       if (pointer + 1 === cmdHistory.length) return;
 
       setInputVal(cmdHistory[pointer + 1]);
-      setPointer(prevState => prevState + 1);
+      setPointer((prevState) => prevState + 1);
       inputRef?.current?.blur();
     }
 
@@ -231,7 +238,7 @@ const Terminal = () => {
       }
 
       setInputVal(cmdHistory[pointer - 1]);
-      setPointer(prevState => prevState - 1);
+      setPointer((prevState) => prevState - 1);
       inputRef?.current?.blur();
     }
   };
@@ -239,7 +246,7 @@ const Terminal = () => {
   // For caret position at the end
   useEffect(() => {
     const timer = setTimeout(() => {
-      inputRef?.current?.focus();
+      inputRef?.current?.focus({ preventScroll: true });
     }, 1);
     return () => clearTimeout(timer);
   }, [inputRef, inputVal, pointer]);
@@ -248,7 +255,7 @@ const Terminal = () => {
     <Wrapper data-testid="terminal-wrapper" ref={containerRef}>
       {hints.length > 1 && (
         <div>
-          {hints.map(hCmd => (
+          {hints.map((hCmd) => (
             <Hints key={hCmd}>{hCmd}</Hints>
           ))}
         </div>
@@ -286,7 +293,10 @@ const Terminal = () => {
           clearHistory,
         };
         return (
-          <div key={_.uniqueId(`${cmdH}_`)}>
+          <div
+            key={cmdHistory.length - index}
+            ref={index === 0 ? latestCommandRef : undefined}
+          >
             <div>
               <TermInfo />
               <MobileBr />

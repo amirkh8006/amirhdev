@@ -8,7 +8,11 @@ import {
   Description,
   DescriptionList,
   SectionTitle,
+  ExperienceTechnologies,
+  TechLabel,
 } from "../styles/Experience.styled";
+
+import { Tag } from "../styles/Projects.styled";
 
 type DescriptionItem = string | { text: string; href: string };
 
@@ -17,93 +21,90 @@ type Experience = {
   position: string;
   startDate: string;
   endDate: string;
+  tech: string[];
   description: DescriptionItem[];
 };
 
 const experiences: Experience[] = [
   {
-    company: "Khanetala Co.",
-    position: "DevOps & Backend Engineer",
-    startDate: "2025/09",
+    company: "Khanetala",
+    tech: [
+      "Node.js",
+      "NestJS",
+      "Redis",
+      "MongoDB",
+      "Nexus",
+      "GitLab",
+      "Prometheus",
+      "Grafana",
+      "Docker",
+      "Linux",
+    ],
+    position: "Backend Engineer",
+    startDate: "2025/08",
     endDate: "Present",
     description: [
-      "Designed and deployed a GitLab CI/CD pipeline with Shell Runners, automating build and deployment workflows across the team.",
-      "Managed application lifecycle using systemd, improving process reliability and service recovery in production.",
-      "Set up Nexus Repository for centralized artifact management and integrated Trivy for automated vulnerability scanning in the pipeline.",
-      "Built a full observability stack with Prometheus & Grafana, including custom dashboards, exporters, and alerting rules for real-time infrastructure monitoring.",
-      "Deployed Mattermost as the team's internal communication and DevOps alerting hub, integrated with monitoring pipelines.",
-      "Collaborated on scalable microservices architecture using NestJS and Node.js, writing Dockerfiles and Docker Compose configs for consistent, portable deployments.",
-      "Configured MongoDB replication and automated secure database backups, ensuring high availability and data integrity.",
-      "Hardened and configured Redis with isolated databases per service, optimizing performance and security boundaries.",
-      "Self-hosted Vaultwarden for secure, team-wide password and secrets management.",
-      "Deployed TriliumNext as a self-hosted knowledge base for internal documentation and team note-taking.",
+      "Led infrastructure and server-side operations, ensuring uptime, security, and reliability.",
+      "Developed scalable microservices using NestJS and Node.js with fully Dockerized workflows.",
+      "Managed GitLab Shell Runners and CI/CD pipelines for automated deployments.",
+      "Deployed and tuned Prometheus and Grafana with custom dashboards and alerting.",
+      "Enhanced system reliability using systemd service management.",
     ],
   },
   {
-    company: "Galaxy Vision Co.",
-    position: "Back End Engineer",
-    startDate: "2024/06",
+    company: "Galaxy Vision",
+    tech: [
+      "Node.js",
+      "NestJS",
+      "Express",
+      "MongoDB",
+      "MinIO",
+      "Redis",
+      "NGINX",
+    ],
+    position: "Backend Developer",
+    startDate: "2024/05",
     endDate: "2025/05",
     description: [
-      "Developed and maintained backend systems using Node.js, Express, and NestJS for high-performance applications.",
-      "Designed and optimized MongoDB schemas, implemented efficient queries, and integrated Docker + MinIO for scalable media handling.",
-      "Configured deployments using PM2 and Git hooks to enable seamless deployment processes.",
-      "Configured and managed NGINX as a reverse proxy, handling routing, SSL termination, and performance optimization.",
-      "Deployed and configured Sentry for real-time error monitoring, improving debugging efficiency and issue response time.",
-      "Implemented analytics tracking with self-hosted Matomo for real-time user behavior insights and utilized Redis for caching and performance improvements.",
-      "Set up and maintained Uptime Kuma for real-time service and endpoint monitoring, ensuring high availability and quick incident response.",
+      "Developed and optimized the wallet system with a focus on reliable and secure transactions.",
+      "Maintained and scaled backend services connected to multi-database MongoDB clusters.",
+      "Refactored the legacy codebase into modular NestJS, improving performance and maintainability.",
+      "Integrated Redis caching, improving response times across services.",
     ],
   },
   {
-    company: "Jadeh Logistic Co.",
-    position: "Back End Developer",
+    company: "Jadeh",
+    tech: [
+      "Node.js",
+      "Express.js",
+      "NestJS",
+      "PostgreSQL",
+      "MongoDB",
+      "Redis",
+      "Message Brokers",
+    ],
+    position: "Backend Developer",
     startDate: "2020/10",
-    endDate: "2024/05",
+    endDate: "2024/04",
     description: [
-      "Developed and maintained back-end applications using Node.js, MongoDB, Parse Platform, Redis, and message brokers.",
-      "Collaborated on the creation of a wallet app using NestJS, PostgreSQL, and Swagger for enhanced user experience.",
-      "Designed and implemented an operational app to support the main app, utilizing Node.js, Express.js, and MongoDB.",
-    ],
-  },
-  {
-    company: "Daneshjooyar",
-    position: "Instructor",
-    startDate: "2020/06",
-    endDate: "2020/10",
-    description: [
-      "Instructor of Node.js and RESTful API training course",
-      { text: "Course Link:", href: "https://www.daneshjooyar.com/node-js-rest/" },
-    ],
-  },
-  {
-    company: "Manian publications",
-    position: "Author",
-    startDate: "2020/06",
-    endDate: "2020/10",
-    description: [
-      "Author of the Node.js learning book",
-      { text: "Book Link:", href: "https://ketab.ir/book/80428abd-84c3-4a90-99b4-6d8eacbc9ab5" },
-    ],
-  },
-  {
-    company: "FreeLance",
-    position: "Developer",
-    startDate: "2019/05",
-    endDate: "2020/09",
-    description: [
-      "Independently completed multiple full-stack development projects for clients from various industries.",
+      "Contributed to the wallet subsystem, ensuring secure and reliable transaction processing.",
+      "Maintained the main backend application, ensuring stability, scalability, and resilience.",
+      "Developed high-performance APIs using message brokers and distributed caching.",
     ],
   },
 ];
 
 const Experience: React.FC = () => (
   <ExperienceContainer data-testid="experience">
-    <SectionTitle>Professional Experiences</SectionTitle>
+    <SectionTitle>Professional Experience</SectionTitle>
     {experiences.map((exp, index) => (
       <ExperienceItem key={index}>
         <CompanyName>{exp.company}</CompanyName>
         <Position>{exp.position}</Position>
-        <DateRange>{exp.startDate} - {exp.endDate}</DateRange>
+        <p>Tehran, Iran · On-site · Full-time</p>
+        <DateRange>
+          {exp.startDate} - {exp.endDate}
+        </DateRange>
         <Description>
           <DescriptionList>
             {exp.description.map((item, idx) =>
@@ -120,8 +121,17 @@ const Experience: React.FC = () => (
             )}
           </DescriptionList>
         </Description>
+        <ExperienceTechnologies aria-label="Technologies">
+          <TechLabel>Tech:</TechLabel>
+          {exp.tech.map((tech) => (
+            <Tag key={tech}>{tech}</Tag>
+          ))}
+        </ExperienceTechnologies>
       </ExperienceItem>
     ))}
+    <p>
+      For my Node.js book, type <strong>publications</strong>.
+    </p>
   </ExperienceContainer>
 );
 

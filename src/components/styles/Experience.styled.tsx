@@ -1,4 +1,17 @@
 import styled from "styled-components";
+import { TagsContainer } from "./Projects.styled";
+
+export const ExperienceTechnologies = styled(TagsContainer)`
+  margin-top: 1rem;
+  margin-bottom: 0;
+  align-items: center;
+`;
+
+export const TechLabel = styled.span`
+  color: ${({ theme }) => theme.colors?.text[200]};
+  font-size: 0.9rem;
+  margin-right: 0.25rem;
+`;
 
 export const ExperienceContainer = styled.div`
   margin: 1rem 0;
