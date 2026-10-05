@@ -3,6 +3,8 @@ import {
   Container,
   PreName,
   Seperator,
+  Name,
+  Role,
 } from "../styles/Welcome.styled";
 
 const Welcome: React.FC = () => {
@@ -20,7 +22,8 @@ const Welcome: React.FC = () => {
 :..:::::..::..:::::..::....::..:::::..::                                        
         `}
       </PreName>
-      <div>Welcome to my portfolio.</div>
+      <Name>AmirHossein Khojasteh</Name>
+      <Role>Backend Engineer</Role>
       <Seperator>----</Seperator>
       <div>
         For a list of available commands, type `<Cmd>help</Cmd>`.
